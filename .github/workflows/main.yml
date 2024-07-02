@@ -1,0 +1,22 @@
+name: Auto Review Comment
+
+on:
+  workflow_call:
+    inputs:
+      data-path:
+        description: "path to data yaml file with comments"
+        required: true
+        type: string
+
+jobs:
+  auto-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Analyse changes
+        uses: ./
+        id: auto-review-action
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          data-path: ""

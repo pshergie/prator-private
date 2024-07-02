@@ -1,0 +1,16 @@
+name: "pull-request-auto-reviewer"
+description: "auto post comments based on changes"
+author: pshergie
+branding:
+  icon: "message-square"
+  color: "black"
+inputs:
+  token:
+    description: "token for github"
+    required: true
+  data-path:
+    description: "path to data yaml file with comments"
+    required: true
+runs:
+  using: "node20"
+  main: "dist/index.js"
