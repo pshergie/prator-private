@@ -18,7 +18,7 @@ Add review comments to your pull requests based on changes in 2 steps:
         - [ ] the code is tested
         - [ ] files are compressed
         - [ ] files contain no errors
-```
+````
 
 2. Create a workflow [(more info)](#add-the-action-to-your-config):
 
