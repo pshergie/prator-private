@@ -1,14 +1,26 @@
-# pull-request-auto-reviewer-private
+# Pull Request Auto Reviewer Private (GitHub Action)
 
-![action example](https://raw.githubusercontent.com/pshergie/pull-request-auto-reviewer/main/img/example.jpg)
+![action example](./img/example.jpg)
 
-## Usage
+_The script works only in private repos. For public ones you should use [prator](https://github.com/pshergie/prator)_.
 
-Use this action in order to auto post comments in pull requests based on the changes
+Add review comments to your pull requests based on changes in 2 steps:
 
-## Setup
+1. Create a file with rules for the action script. [(more info)](#add-rules-for-the-action-script):
 
-Insert the action into your GitHub workflow. An example:
+```yml
+- prependMsg: "🗯️[[pull-request-auto-reviewer]](https://github.com/pshergie/prator-private):"
+- checks:
+    - paths: "**/*.js"
+      message: |
+        ### Please tick the following checkboxes:
+
+        - [ ] the code is tested
+        - [ ] files are compressed
+        - [ ] files contain no errors
+```
+
+2. Create a workflow [(more info)](#add-the-action-to-your-config):
 
 ```yml
 name: Auto-review comment
@@ -17,6 +29,9 @@ on:
     branches:
       - main
       - master
+permissions:
+  pull-requests: write
+  contents: read
 jobs:
   prepare:
     name: Auto-review
@@ -27,14 +42,22 @@ jobs:
         with:
           fetch-depth: 2
       - name: Analyze changes
-        id: hello
-        uses: pshergie/auto-review-comment-private@v1
+        uses: pshergie/prator-private@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          data-path: .github/auto-review-comment.yml
+          rules-path: path-to-your-rules-file
 ```
 
-In the config you need to specify 2 params:
+## Add rules for the action script
+
+For this step you need to create a YAML file with the rules that are going to be utilized by the action script. There you need to specify 2 params:
+
+- `prependMsg` is a message that is prepended to every message of GitHub actions bot. Leave empty if not needed.
+- `checks` contains a list of `paths` and `message` keys. `paths` is dedicated to specify path(s) of changes that would trigger posting of a followed `message` as a pull request comment. In case of multiple `paths` they should be separated by a comma. `message` could be a simple string or markdown. All messages will be combined into a single comment.
+
+## Add the action to your config
+
+In this step create a workflow that uses the action script. `pull-requests: write` permission is needed for the GitHub actions bot to be able to post a comment in a PR. `contents: read` permission is needed to read the necessary info of your repo. `fetch-depth` is needed for a correct work of a diff fetch in the script. It's also important to provide 2 params that are being consumed by the action script:
 
 - `token`: your GitHub token
-- `data-path`: a path to a yaml file with a config that contains `prependMsg` and `checks` props. `prependMsg` is a message that prepends to every message of the bot. Keep empty if not needed. **By default** it's `🗯️ [pull-request-auto-reviewer]:` (as per screenshot). `checks` props consists of pairs of `paths` and `message` keys. `paths` dedicated to specify path(s) of changes that would trigger posting of followed `message` as a pull request comment. In case of multiple `paths` they should be separated by a comma. `message` could be a simple string or markdown. All messages will be combined into a single comment. An example of such a file:
+- `rules-path`: a path to the file with rules that you have specified earlier (for instance `.github/auto-review-rules.yml`)
