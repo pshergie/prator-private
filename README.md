@@ -2,7 +2,7 @@
 
 ![action example](./img/example.jpg)
 
-_The script works only in private repos. For public ones you should use [prator](https://github.com/pshergie/prator)_.
+_The script works only in private repos. For public ones you should use [prator](https://github.com/marketplace/actions/pull-request-auto-reviewer)_.
 
 Add review comments to your pull requests based on changes in 2 steps:
 
