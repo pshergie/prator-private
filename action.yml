@@ -1,4 +1,4 @@
-name: "pull-request-auto-reviewer-private"
+name: "Pull Request Auto Reviewer Private"
 description: "auto post comments based on changes"
 author: pshergie
 branding:
