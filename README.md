@@ -1,6 +1,6 @@
 # Pull Request Auto Reviewer Private (GitHub Action)
 
-![action example](./img/example.jpg)
+![action example](./img/example.jpeg)
 
 _The script works only in private repos. For public ones you should use [prator](https://github.com/marketplace/actions/pull-request-auto-reviewer)_.
 
@@ -13,17 +13,23 @@ Add review comments to your pull requests based on changes in 2 steps:
 - checks:
     - paths: "**/*.js"
       message: |
-        ### Please tick the following checkboxes:
+        ### As you changed javascript file(s) tick the following checks:
 
-        - [ ] the code is tested
-        - [ ] files are compressed
-        - [ ] files contain no errors
+        - [ ] unit/integration tests are added
+        - [ ] no performance implications
+        - [ ] relevant documentation is added/updated
+    - paths: "package-lock.json"
+      message: |
+        ### Since you've added/updated dependencies, pay attention to this:
+
+        - [ ] clear reasoning for adding or updating the dependency is provided
+        - [ ] no security implications or concerns related to the dependency
 ````
 
 2. Create a workflow [(more info)](#add-the-action-to-your-config):
 
 ```yml
-name: Auto-review comment
+name: Auto Review comment
 on:
   pull_request:
     branches:
